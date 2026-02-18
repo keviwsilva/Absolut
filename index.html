@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absolut • Tech Forward • Shopee Integrado</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .tech-font {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        /* Efeitos tech */
+        .glow-blue {
+            box-shadow: 0 0 30px rgba(0, 180, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .glow-blue:hover {
+            box-shadow: 0 0 50px rgba(0, 180, 255, 0.5);
+        }
+
+        .border-glow {
+            border: 1px solid rgba(0, 180, 255, 0.2);
+        }
+
+        /* Card holográfico */
+        .holographic-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 160, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .holographic-card:hover {
+            border-color: rgba(0, 180, 255, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0, 180, 255, 0.3);
+        }
+
+        /* Linhas de dados animadas */
+        .data-pulse {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00b4ff, #0066ff, #00b4ff, transparent);
+            background-size: 200% 100%;
+            animation: dataStream 3s linear infinite;
+        }
+
+        @keyframes dataStream {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Botão shopee */
+        .btn-shopee {
+            background: #0c49f0;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-shopee:hover {
+            background: #0a3ad0;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(12, 73, 240, 0.5);
+        }
+
+        /* Botão portal */
+        .btn-portal {
+            background: transparent;
+            border: 1px solid #00b4ff;
+            color: white;
+            padding: 0.7rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            z-index: 1;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .btn-portal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,180,255,0.2), rgba(0,180,255,0.1), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-portal:hover::before {
+            left: 100%;
+        }
+
+        .btn-portal:hover {
+            border-color: #0066ff;
+            box-shadow: 0 0 40px #00b4ff;
+            transform: scale(1.05);
+        }
+
+        /* Grid futurista */
+        .tech-grid {
+            background-image: 
+                linear-gradient(rgba(0, 180, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 180, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Partículas flutuantes */
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00b4ff;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.3;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+        }
+
+        /* Barra de progresso */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #00b4ff, #0066ff);
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+
+        /* Badges de produto */
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 180, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            color: #00b4ff;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            z-index: 10;
+        }
+
+        .product-badge.sale {
+            background: rgba(255, 70, 70, 0.2);
+            border-color: rgba(255, 70, 70, 0.3);
+            color: #ff4646;
+        }
+
+        .product-badge.new {
+            background: rgba(0, 255, 200, 0.2);
+            border-color: rgba(0, 255, 200, 0.3);
+            color: #00ffc8;
+        }
+
+        .product-badge.pre-venda {
+            background: rgba(255, 193, 7, 0.2);
+            border-color: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
+        .product-badge.kit {
+            background: rgba(156, 39, 176, 0.2);
+            border-color: rgba(156, 39, 176, 0.3);
+            color: #9c27b0;
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(0, 180, 255, 0.1);
+            border-top: 3px solid #00b4ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Checkbox customizado */
+        .tech-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tech-checkbox:checked {
+            background: #00b4ff;
+            border-color: #00b4ff;
+        }
+
+        .tech-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: black;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .filter-active {
+            background: rgba(0, 180, 255, 0.2) !important;
+            border-color: #00b4ff !important;
+            color: #00b4ff !important;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .product-card .btn-shopee {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Barra de progresso -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- NAVBAR unificada -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-[#00b4ff]/10">
+        <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <a href="#hero" class="text-3xl tracking-tighter tech-font font-bold text-white hover:text-[#00b4ff] transition scroll-link">ABSOLUT<span class="text-[#00b4ff] text-4xl">_</span></a>
+                <div class="h-6 w-px bg-[#00b4ff]/30 ml-2"></div>
+                <span class="text-xs text-[#00b4ff]/70 tracking-[0.3em] uppercase ml-2">shopee integrado</span>
+            </div>
+
+            <!-- Menu desktop -->
+            <div class="hidden md:flex gap-10 text-sm">
+                <a href="#hero" class="scroll-link text-gray-300 hover:text-[#00b4ff] transition flex items-center gap-1 group">
+                    <span class="w-1 h-1 bg-[#00b4ff] rounded-full opacity-0 group-hover:opacity-100 transition"></span>
+                    INÍCIO
+                </a>
+                <a href="#categorias" class="scroll-link text-gray-300 hover:text-[#00b4ff] transition flex items-center gap-1 group">
+                    <span class="w-1 h-1 bg-[#00b4ff] rounded-full opacity-0 group-hover:opacity-100 transition"></span>
+                    CATEGORIAS
+                </a>
+                <a href="#colecao" class="scroll-link text-gray-300 hover:text-[#00b4ff] transition flex items-center gap-1 group">
+                    <span class="w-1 h-1 bg-[#00b4ff] rounded-full opacity-0 group-hover:opacity-100 transition"></span>
+                    COLEÇÃO
+                </a>
+                
+                <a href="#contato" class="scroll-link text-gray-300 hover:text-[#00b4ff] transition flex items-center gap-1 group">
+                    <span class="w-1 h-1 bg-[#00b4ff] rounded-full opacity-0 group-hover:opacity-100 transition"></span>
+                    CONTATO
+                </a>
+            </div>
+
+            <!-- Ícones -->
+            <div class="flex items-center gap-6">
+                <button class="text-white hover:text-[#00b4ff] transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+                <a href="https://shopee.com.br" target="_blank" class="text-white hover:text-[#0c49f0] transition relative">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="absolute -top-2 -right-2 bg-[#0c49f0] text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">→</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="min-h-screen flex items-center relative px-4 pt-32 overflow-hidden tech-grid">
+        <!-- Partículas flutuantes -->
+        <div class="floating-particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-particle" style="top: 60%; left: 85%; width: 6px; height: 6px; animation-delay: 2s;"></div>
+        <div class="floating-particle" style="top: 80%; left: 30%; width: 3px; height: 3px; animation-delay: 1s;"></div>
+        <div class="floating-particle" style="top: 40%; left: 70%; width: 5px; height: 5px; animation-delay: 3s;"></div>
+
+        <!-- Linhas de dados decorativas -->
+        <div class="absolute inset-0 overflow-hidden opacity-20">
+            <div class="data-pulse w-full max-w-6xl mx-auto mt-40 rotate-12"></div>
+            <div class="data-pulse w-full max-w-7xl mx-auto mt-80 -rotate-6"></div>
+            <div class="data-pulse w-full max-w-5xl mx-auto mt-96 rotate-3"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <!-- Conteúdo da esquerda -->
+            <div>
+                <div class="flex items-center gap-4 mb-8" id="hero-pre">
+                    <span class="text-[#00b4ff] tech-font text-sm tracking-[0.3em] uppercase border-r border-[#00b4ff]/30 pr-4">shopee exclusive</span>
+                    <span class="text-gray-500 text-sm">wearable tech</span>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-bold tech-font leading-[1.1] mb-8 text-white" id="hero-title">
+                    O futuro<br>do <span class="text-[#00b4ff] relative">vestir
+                        <span class="absolute -bottom-2 left-0 w-full h-[2px] bg-[#00b4ff]/30"></span>
+                    </span>
+                </h1>
+                <p class="text-gray-400 max-w-xl text-lg mb-12 leading-relaxed" id="hero-p">
+                    Interface viva, roupas inteligentes. Cada peça é um display do amanhã — conectando você ao que há de mais avançado em tecnologia têxtil.
+                </p>
+
+                <!-- Estatísticas -->
+                <div class="grid grid-cols-3 gap-6 mb-12 border-y border-[#00b4ff]/10 py-8">
+                    <div>
+                        <div class="text-3xl tech-font text-[#00b4ff]">+150</div>
+                        <div class="text-xs text-gray-500">tecnologias patenteadas</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl tech-font text-[#00b4ff]">24/7</div>
+                        <div class="text-xs text-gray-500">conectividade</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl tech-font text-[#00b4ff]">5 anos</div>
+                        <div class="text-xs text-gray-500">de desenvolvimento</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4" id="hero-buttons">
+                    <button class="btn-portal tech-font text-lg group" onclick="document.getElementById('colecao').scrollIntoView({behavior: 'smooth'})">
+                        <span class="flex items-center gap-2">
+                            EXPLORAR COLEÇÃO
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <a href="https://shopee.com.br" target="_blank" class="border border-white/20 text-white px-8 py-3 tech-font text-lg hover:bg-white/5 transition flex items-center gap-2 justify-center">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+                        </svg>
+                        IR PARA SHOPEE
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lado direito: imagem conceitual -->
+            <div class="relative hidden md:block">
+                <div class="relative z-10">
+                    <div class="absolute inset-0 bg-[#00b4ff]/5 rounded-full blur-3xl"></div>
+                    <div class="relative bg-gradient-to-br from-[#001c28] to-[#000] rounded-2xl p-1 border border-[#00b4ff]/20 glow-blue">
+                        <img src="absolut.jpeg" alt="Absolut Tech" class="rounded-2xl w-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <span class="text-xs text-gray-600 mb-2 tracking-wider">SCROLL</span>
+            <div class="w-[2px] h-16 bg-gradient-to-b from-[#00b4ff] to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO DE CATEGORIAS -->
+    <section id="categorias" class="py-24 px-4 bg-gradient-to-b from-[#0a0a0a] to-[#050505] relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-[#00b4ff] tech-font text-sm tracking-[0.3em] uppercase">• categorias •</span>
+                <h2 class="text-4xl md:text-5xl tech-font font-bold text-white mt-4">Tecnologia <span class="text-[#00b4ff]">aplicada</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-4">cada categoria é desenvolvida com uma finalidade tecnológica específica</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Categoria 1 -->
+                <div class="holographic-card rounded-xl p-8 text-center group cursor-pointer" onclick="filtrarPorCategoria('camisetas-femininas')">
+                    <div class="w-20 h-20 mx-auto bg-[#00b4ff]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#00b4ff]/20 transition-all">
+                        <span class="text-4xl text-[#00b4ff]">👚</span>
+                    </div>
+                    <h3 class="text-xl tech-font text-white mb-3">FEMININO</h3>
+                    <p class="text-gray-500 text-sm">camisetas dry fit, conjuntos, bermudas</p>
+                    <div class="data-pulse w-12 mx-auto mt-4 opacity-50"></div>
+                </div>
+
+                <!-- Categoria 2 -->
+                <div class="holographic-card rounded-xl p-8 text-center group cursor-pointer" onclick="filtrarPorCategoria('camisetas-masculinas')">
+                    <div class="w-20 h-20 mx-auto bg-[#00b4ff]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#00b4ff]/20 transition-all">
+                        <span class="text-4xl text-[#00b4ff]">👕</span>
+                    </div>
+                    <h3 class="text-xl tech-font text-white mb-3">MASCULINO</h3>
+                    <p class="text-gray-500 text-sm">kits dry fit, camisetas, treino</p>
+                    <div class="data-pulse w-12 mx-auto mt-4 opacity-50"></div>
+                </div>
+
+                <!-- Categoria 3 -->
+                <div class="holographic-card rounded-xl p-8 text-center group cursor-pointer" onclick="filtrarPorCategoria('conjuntos-femininos')">
+                    <div class="w-20 h-20 mx-auto bg-[#00b4ff]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#00b4ff]/20 transition-all">
+                        <span class="text-4xl text-[#00b4ff]">👗</span>
+                    </div>
+                    <h3 class="text-xl tech-font text-white mb-3">CONJUNTOS</h3>
+                    <p class="text-gray-500 text-sm">short saia, cropped, acessórios</p>
+                    <div class="data-pulse w-12 mx-auto mt-4 opacity-50"></div>
+                </div>
+
+                <!-- Categoria 4 -->
+                <div class="holographic-card rounded-xl p-8 text-center group cursor-pointer" onclick="filtrarPorCategoria('bermudas-femininas')">
+                    <div class="w-20 h-20 mx-auto bg-[#00b4ff]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#00b4ff]/20 transition-all">
+                        <span class="text-4xl text-[#00b4ff]">🩳</span>
+                    </div>
+                    <h3 class="text-xl tech-font text-white mb-3">BERMUDAS</h3>
+                    <p class="text-gray-500 text-sm">compressão, modeladoras, cintura alta</p>
+                    <div class="data-pulse w-12 mx-auto mt-4 opacity-50"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HEADER DA COLEÇÃO SHOPEE -->
+    <section class="pt-16 px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div>
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-[#00b4ff] tech-font text-sm tracking-[0.3em] uppercase border-r border-[#00b4ff]/30 pr-4">shopee exclusive</span>
+                    <span class="text-gray-500 text-sm" id="produto-count">carregando...</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl tech-font font-bold text-white mb-4">
+                    Compre na <span class="text-[#0c49f0]">Shopee</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl text-lg">Clique em qualquer produto para ser redirecionado diretamente para a página da Shopee e finalizar sua compra com segurança.</p>
+            </div>
+
+            <!-- Ordenação -->
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-500">ordenar por:</span>
+                <select id="sort-select" class="bg-black/50 border border-[#00b4ff]/30 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#00b4ff]">
+                    <option value="relevancia">Mais relevantes</option>
+                    <option value="menor-preco">Menor preço</option>
+                    <option value="maior-preco">Maior preço</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTROS RÁPIDOS -->
+    <section class="px-8 py-8 max-w-7xl mx-auto">
+        <div class="flex flex-wrap gap-3" id="filtros-rapidos">
+            <button class="filtro-categoria px-5 py-2 border border-[#00b4ff] bg-[#00b4ff]/10 text-[#00b4ff] rounded-full text-sm hover:bg-[#00b4ff] hover:text-black transition-all filter-active" data-categoria="todos">todos</button>
+            <button class="filtro-categoria px-5 py-2 border border-white/20 text-gray-400 rounded-full text-sm hover:border-[#00b4ff]/50 hover:text-white transition" data-categoria="camisetas-femininas">feminino</button>
+            <button class="filtro-categoria px-5 py-2 border border-white/20 text-gray-400 rounded-full text-sm hover:border-[#00b4ff]/50 hover:text-white transition" data-categoria="camisetas-masculinas">masculino</button>
+            <button class="filtro-categoria px-5 py-2 border border-white/20 text-gray-400 rounded-full text-sm hover:border-[#00b4ff]/50 hover:text-white transition" data-categoria="conjuntos-femininos">conjuntos</button>
+            <button class="filtro-categoria px-5 py-2 border border-white/20 text-gray-400 rounded-full text-sm hover:border-[#00b4ff]/50 hover:text-white transition" data-categoria="bermudas-femininas">bermudas</button>
+            <button class="filtro-categoria px-5 py-2 border border-white/20 text-gray-400 rounded-full text-sm hover:border-[#00b4ff]/50 hover:text-white transition" data-categoria="kits">kits</button>
+        </div>
+    </section>
+
+    <!-- CONTEÚDO PRINCIPAL: FILTROS + PRODUTOS -->
+    <section id="colecao" class="px-8 pb-20 max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-4 gap-8">
+            
+            <!-- FILTROS LATERAIS -->
+            <div class="lg:col-span-1">
+                <div class="holographic-card rounded-xl p-6 sticky top-28">
+                    <h3 class="text-white tech-font text-lg mb-6 flex items-center justify-between">
+                        FILTROS
+                        <span id="limpar-filtros" class="text-xs text-[#00b4ff] cursor-pointer hover:underline">limpar todos</span>
+                    </h3>
+
+                    
+                    <button id="aplicar-filtros" class="w-full btn-portal tech-font text-center">APLICAR FILTROS</button>
+                </div>
+            </div>
+            
+            <!-- GRADE DE PRODUTOS -->
+            <div class="lg:col-span-3">
+                
+                <!-- Resultados encontrados -->
+                <div class="flex justify-between items-center mb-6">
+                    <p class="text-gray-400 text-sm" id="resultados-encontrados">carregando...</p>
+                    <div class="flex gap-2">
+                        <button class="p-2 border border-[#00b4ff]/30 rounded hover:border-[#00b4ff] transition">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loader -->
+                <div id="loader" class="loader"></div>
+
+                <!-- Grid de produtos -->
+                <div id="produtos-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"></div>
+
+                <!-- Paginação -->
+                <div id="paginacao" class="flex justify-center items-center gap-3 mt-12"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO TECNOLOGIA -->
+    <!-- <section id="tecnologia" class="py-32 px-4 bg-gradient-to-b from-[#050505] to-[#0a0a0a] relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#00b4ff]/5 to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-20">
+                <span class="text-[#00b4ff] tech-font text-sm tracking-[0.3em] uppercase">• engenharia •</span>
+                <h2 class="text-5xl md:text-6xl tech-font font-bold text-white mt-4">A tecnologia por trás <br><span class="text-[#00b4ff]">do tecido</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+              
+                <div class="text-center p-8">
+                    <div class="w-24 h-24 mx-auto bg-[#00b4ff]/10 rounded-2xl flex items-center justify-center mb-6 border border-[#00b4ff]/20">
+                        <svg class="w-12 h-12 text-[#00b4ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl tech-font text-white mb-3">Dry Fit</h3>
+                    <p class="text-gray-500">tecnologia de absorção e secagem rápida para máximo conforto</p>
+                </div>
+
+                <div class="text-center p-8">
+                    <div class="w-24 h-24 mx-auto bg-[#00b4ff]/10 rounded-2xl flex items-center justify-center mb-6 border border-[#00b4ff]/20">
+                        <svg class="w-12 h-12 text-[#00b4ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl tech-font text-white mb-3">Proteção UV</h3>
+                    <p class="text-gray-500">bloqueio de raios solares para treinos ao ar livre</p>
+                </div>
+
+                <div class="text-center p-8">
+                    <div class="w-24 h-24 mx-auto bg-[#00b4ff]/10 rounded-2xl flex items-center justify-center mb-6 border border-[#00b4ff]/20">
+                        <svg class="w-12 h-12 text-[#00b4ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl tech-font text-white mb-3">Compressão</h3>
+                    <p class="text-gray-500">modelagem e suporte muscular durante a atividade física</p>
+                </div>
+            </div>
+
+            <div class="border-t border-[#00b4ff]/10 pt-16">
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="text-5xl tech-font text-[#00b4ff]">2018</div>
+                        <div class="text-sm text-gray-600">início da pesquisa</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl tech-font text-[#00b4ff]">2022</div>
+                        <div class="text-sm text-gray-600">primeiro protótipo</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl tech-font text-[#00b4ff]">2024</div>
+                        <div class="text-sm text-gray-600">patentes internacionais</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl tech-font text-[#00b4ff]">2026</div>
+                        <div class="text-sm text-gray-600">lançamento global</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- SEÇÃO DE CONTATO -->
+    <section id="contato" class="py-32 px-4 bg-[#0a0a0a] relative">
+        <div class="absolute inset-0 tech-grid opacity-10"></div>
+
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="text-[#00b4ff] tech-font text-sm tracking-[0.3em] uppercase">• conecte-se •</span>
+            <h2 class="text-5xl md:text-7xl tech-font font-bold text-white mb-6">entre no <span class="text-[#00b4ff]">circuito</span></h2>
+            <p class="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">receba drops exclusivos, atualizações de coleção e ofertas especiais da Shopee.</p>
+
+            <form class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto mb-16" onsubmit="event.preventDefault();">
+                <input type="email" placeholder="seu@email.com" class="flex-1 bg-black/50 border border-[#00b4ff]/30 rounded px-6 py-5 text-white placeholder-gray-600 focus:outline-none focus:border-[#00b4ff] transition text-lg">
+                <button type="submit" class="btn-portal tech-font text-lg whitespace-nowrap px-10">ativar assinatura</button>
+            </form>
+
+            <!-- Links sociais e contato -->
+            <div class="grid md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-[#00b4ff]/10">
+                <div>
+                    <h4 class="text-white tech-font mb-4">REDES</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">instagram</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">twitter / x</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">tiktok</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">linkedin</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white tech-font mb-4">SUPORTE</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">faq</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">trocas e devoluções</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">manual de tecnologia</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">garantia</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white tech-font mb-4">SERVIÇOS</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">app android/ios</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">showroom ar</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">configurador 3d</li>
+                        <li class="hover:text-[#00b4ff] transition cursor-pointer">developer api</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white tech-font mb-4">ESPAÇO FÍSICO</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li>são paulo — JK</li>
+                        <li>nova york — soho</li>
+                        <li>tóquio — shibuya</li>
+                        <li>berlim — mitte</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 px-4 border-t border-[#00b4ff]/10 bg-black/60">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <span class="text-3xl tracking-tighter tech-font font-bold text-white mb-4 md:mb-0">ABSOLUT<span class="text-[#00b4ff]">_</span></span>
+                <div class="flex gap-8 text-xs text-gray-600">
+                    <span>termos de uso</span>
+                    <span>privacidade</span>
+                    <span>parceria shopee</span>
+                    <span>imprensa</span>
+                </div>
+            </div>
+            <div class="data-pulse w-full max-w-3xl mx-auto my-6"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-700">
+                <span>ABSOLUT © 2026 — moda tech forward. todos os direitos reservados.</span>
+                <span class="flex items-center gap-2 mt-2 md:mt-0">
+                    <span>powered by shopee</span>
+                    <span class="w-2 h-2 bg-[#0c49f0] rounded-full"></span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript com os produtos e funcionalidades -->
+    <script>
+        // Dados dos produtos (JSON integrado)
+        const produtosData = {
+            "produtos": [
+                 {
+      "id": "camisa-termica-uv-001",
+      "nome": "Camisa Térmica Proteção UV 50+ Segunda Pele",
+      "descricao": "Camiseta blusa malha fria unissex academia manga longa com proteção UV 50+",
+      "preco": 27.40,
+      "preco_original": 39.14,
+      "desconto": 30,
+      "categoria": "camisetas-unissex",
+      "tecnologia": ["dry-fit", "protecao-uv", "termico"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 100000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-m6bt1gifgl749f_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/camisa-termica-uv-001"
+    },
+    {
+      "id": "camiseta-dry-fit-feminina-bl01",
+      "nome": "Camiseta Dry Fit Feminina BL01",
+      "descricao": "Camiseta dry fit feminina com proteção UV para academia, corrida e treino",
+      "preco": 26.99,
+      "preco_original": 29.99,
+      "desconto": 10,
+      "categoria": "camisetas-femininas",
+      "tecnologia": ["dry-fit", "protecao-uv"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 30000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-lyhcnwggp8k52f_tn",
+      "shopee_link": "https://s.shopee.com.br/5fjOfKJ1fV"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-01",
+      "nome": "Kit 3 Camisetas Dry Fit Masculinas",
+      "descricao": "Kit com 3 camisetas de poliéster dry fit para academia, treino, corrida e esportes",
+      "preco": 34.90,
+      "preco_original": 60.17,
+      "desconto": 42,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 406,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-mhji9bvmof0if9_tn",
+      "shopee_link": "https://s.shopee.com.br/20q6IuXqJ3"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-casual",
+      "nome": "Kit 3 Camisetas Dry Fit Masculinas - Casual",
+      "descricao": "Kit com 3 camisetas dry fit para uso casual, treino, academia e corrida",
+      "preco": 47.90,
+      "preco_original": 55.06,
+      "desconto": 13,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 20000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7qukw-li35a207xoad73_tn",
+      "shopee_link": "https://s.shopee.com.br/BOS7dXnBV"
+    },
+    {
+      "id": "kit-2-shorts-masculinos-kong",
+      "nome": "Kit 2 Shorts Masculinos Kong",
+      "descricao": "Kit com 2 shorts bermuda 2 em 1 para academia com compressão",
+      "preco": 67.50,
+      "preco_original": 120.54,
+      "desconto": 44,
+      "categoria": "shorts-masculinos",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 8000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-m9llev85vcqhbc_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-2-shorts-kong"
+    },
+    {
+      "id": "kit-3-shorts-masculinos-2em1",
+      "nome": "Kit 3 Shorts Bermuda Masculino 2 em 1",
+      "descricao": "Kit com 3 shorts bermuda de compressão para treino e academia",
+      "preco": 56.98,
+      "preco_original": 101.75,
+      "desconto": 44,
+      "categoria": "shorts-masculinos",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 1000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-miczygiea32ab9_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-shorts-2em1"
+    },
+    {
+      "id": "conjunto-short-saia-cropped-feminino",
+      "nome": "Conjunto Short Saia e Cropped Feminino",
+      "descricao": "Conjunto feminino de short saia e cropped com cinto, alça com regulagem, bojo e laço de amarrar",
+      "preco": 102.40,
+      "preco_original": 160.00,
+      "desconto": 36,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": [],
+      "badge": "conjunto",
+      "disponibilidade": "estoque",
+      "vendas": 815,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81ztc-mk42smk5asjl90_tn",
+      "shopee_link": "https://s.shopee.com.br/6pvM3qip31"
+    },
+    {
+      "id": "kit-3-top-feminino-academia",
+      "nome": "Kit 3 Top Academia Musculação Feminino",
+      "descricao": "Kit com 3 tops para academia, musculação e fitness",
+      "preco": 118.63,
+      "preco_original": 242.10,
+      "desconto": 51,
+      "categoria": "tops-femininos",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 17,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mh7pvaisbxtz4c_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-top-feminino"
+    },
+    {
+      "id": "conjunto-feminino-exclusivo",
+      "nome": "Conjunto Feminino Exclusivo Elegância",
+      "descricao": "Conjunto feminino exclusivo elegante para academia e uso diário",
+      "preco": 72.00,
+      "preco_original": 72.00,
+      "desconto": 0,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": [],
+      "badge": null,
+      "disponibilidade": "estoque",
+      "vendas": 6000,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mfda9y1b2xa87e_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/conjunto-exclusivo"
+    },
+    {
+      "id": "kit-2-conjunto-short-feminino",
+      "nome": "Kit 2 Conjunto Short Feminino Fitness",
+      "descricao": "Kit com 2 conjuntos de short feminino cintura alta com bojo, suplex zero transparência",
+      "preco": 82.90,
+      "preco_original": 110.53,
+      "desconto": 25,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 987,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mhqjgdom8f0j78_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-2-conjunto-short"
+    },
+    {
+      "id": "sandalia-flat-feminina-palha",
+      "nome": "Sandália Flat Feminina Palha",
+      "descricao": "Sandália flat feminina em palha, tendência verão cod:2001",
+      "preco": 99.00,
+      "preco_original": 99.00,
+      "desconto": 0,
+      "categoria": "calcados-femininos",
+      "tecnologia": [],
+      "badge": null,
+      "disponibilidade": "estoque",
+      "vendas": 720,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-7r98o-md7jfwnkuu5ucc_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/sandalia-palha"
+    },
+    {
+      "id": "kit-2-bermudas-compressao-femininas",
+      "nome": "Kit 2 Bermudas Compressão Femininas",
+      "descricao": "Kit com 2 bermudas de compressão femininas modeladoras, antitransparente, cintura alta para treino",
+      "preco": 34.15,
+      "preco_original": 69.69,
+      "desconto": 51,
+      "categoria": "bermudas-femininas",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 452,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mh185g22ikudd1_tn",
+      "shopee_link": "https://s.shopee.com.br/3Veu5mTZEO"
+    },
+    {
+      "id": "regata-cropped-feminina-dry-fit",
+      "nome": "Regata Cropped Feminina Dry Fit",
+      "descricao": "Regata cropped feminina dry fit com tecnologia para academia, corrida e ciclismo",
+      "preco": 30.00,
+      "preco_original": 60.00,
+      "desconto": 50,
+      "categoria": "regatas-femininas",
+      "tecnologia": ["dry-fit"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 1000,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-7r98o-mc6wgrg1929347_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/regata-cropped"
+    },
+    {
+      "id": "kit-3-regatas-nadadora-feminina",
+      "nome": "Kit 3 Regatas Nadadora Dry Fit Feminina",
+      "descricao": "Kit com 3 regatas nadadora dry fit para yoga, poliéster tecido premium leve",
+      "preco": 59.00,
+      "preco_original": 137.21,
+      "desconto": 57,
+      "categoria": "regatas-femininas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 1000,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-me9b8r6pnjls7e_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-regatas"
+    },
+    {
+      "id": "macaquinho-fitness-feminino",
+      "nome": "Macaquinho Fitness Feminino Suplex Slim",
+      "descricao": "Macaquinho fitness feminino suplex slim para academia, treino, corrida e yoga sem transparência",
+      "preco": 42.58,
+      "preco_original": 69.80,
+      "desconto": 39,
+      "categoria": "macacoes-femininos",
+      "tecnologia": ["dry-fit"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 860,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mi8r7nwwlcsmea_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/macaquinho-fitness"
+    },
+    {
+      "id": "calca-lipo-feminina",
+      "nome": "Calça LIPO Feminina Suplex Power",
+      "descricao": "Calça LIPO feminina tecido suplex power modeladora legging plus size G1 G2 G3",
+      "preco": 44.79,
+      "preco_original": 79.98,
+      "desconto": 44,
+      "categoria": "calcados-femininos",
+      "tecnologia": ["compressao"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 6000,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-7r98o-mdoo9hre9ak968_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/calca-lipo"
+    },
+    
+    {
+      "id": "top-esportivo-curto-feminino-01",
+      "nome": "Top Esportivo Curto Academia",
+      "descricao": "Top esportivo curto, leve para treinos intensos, elasticidade performance feminina ativa running",
+      "preco": 29.00,
+      "preco_original": 39.19,
+      "desconto": 26,
+      "categoria": "tops-femininos",
+      "tecnologia": ["dry-fit", "elasticidade"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 12,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mhzjb2p10p352f_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/top-esportivo-curto"
+    },
+    {
+      "id": "kit-2-short-alfaiataria-feminino",
+      "nome": "Kit 2 Short Feminino Alfaiataria Social",
+      "descricao": "Kit com 2 shorts feminino alfaiataria social com um cinto, cintura alta - PROMOÇÃO",
+      "preco": 59.90,
+      "preco_original": 162.00,
+      "desconto": 63,
+      "categoria": "shorts-femininos",
+      "tecnologia": [],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 8000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfeu2yv3lz4759_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-2-short-alfaiataria"
+    },
+    {
+      "id": "conjunto-canelado-feminino-brilho",
+      "nome": "Conjunto Fitness Canelado Feminino com Brilho",
+      "descricao": "Conjunto fitness canelado feminino academia top e legging esportivo com brilho",
+      "preco": 72.90,
+      "preco_original": 107.21,
+      "desconto": 32,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": ["dry-fit", "compressao"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 5000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mamt71n75ptl46_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/conjunto-canelado"
+    },
+    {
+      "id": "kit-4-shorts-2em1-dryfit-masculino",
+      "nome": "KIT 4 Shorts 2 em 1 DryFit VLS Original",
+      "descricao": "Kit com 4 shorts 2 em 1 dry fit VLS original elastano para academia, esporte e treino masculino",
+      "preco": 59.99,
+      "preco_original": 130.41,
+      "desconto": 54,
+      "categoria": "shorts-masculinos",
+      "tecnologia": ["dry-fit", "elastano"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 1000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81ztc-miyk6qbwui9y28_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-4-shorts-dryfit"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-casual",
+      "nome": "Kit 3 Camisetas Dry Fit Masculina - Casual",
+      "descricao": "Kit com 3 camisetas dry fit para uso casual, treino, academia, esportes, exercícios e corrida",
+      "preco": 47.90,
+      "preco_original": 55.06,
+      "desconto": 13,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 20000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-7qukw-li35a207xoad73_tn",
+      "shopee_link": "https://s.shopee.com.br/BOS7dXnBV"
+    },
+    {
+      "id": "kit-3-calcas-legging-suplex-feminina",
+      "nome": "Kit 3 Calças Legging Feminina Suplex",
+      "descricao": "Kit com 3 calças legging feminina suplex cintura alta modeladora",
+      "preco": 62.98,
+      "preco_original": 95.42,
+      "desconto": 34,
+      "categoria": "calcados-femininos",
+      "tecnologia": ["compressao", "modeladora"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 8000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81ztc-mkcw64ee3i0x1d_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-legging"
+    },
+    {
+      "id": "calca-jeans-wide-leg-marmorizada",
+      "nome": "Calça Jeans Feminina Wide Leg Marmorizada",
+      "descricao": "Calça jeans feminina wide leg cintura alta pantalona marmorizada",
+      "preco": 59.94,
+      "preco_original": 99.90,
+      "desconto": 40,
+      "categoria": "calcados-femininos",
+      "tecnologia": [],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 10000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mdxnurrbkiypff_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/jeans-wide-leg"
+    },
+    {
+      "id": "calca-wide-leg-jeans-100-algodao",
+      "nome": "Calça Wide Leg Jeans Feminina Marmorizada",
+      "descricao": "Calça wide leg jeans feminina marmorizada cintura alta 100% algodão premium",
+      "preco": 61.99,
+      "preco_original": 129.15,
+      "desconto": 52,
+      "categoria": "calcados-femininos",
+      "tecnologia": [],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 70000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m3rtt2wlkzed62_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/jeans-100-algodao"
+    },
+    {
+      "id": "vestido-longo-feminino-bojo",
+      "nome": "Vestido Longo Feminino com Bojo",
+      "descricao": "Vestido longo feminino com forro e bojo e regulagem, versáteis super confortáveis e leves qualidade",
+      "preco": 73.99,
+      "preco_original": 73.99,
+      "desconto": 0,
+      "categoria": "vestidos",
+      "tecnologia": [],
+      "badge": null,
+      "disponibilidade": "estoque",
+      "vendas": 188,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m9kn00trojehdf_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/vestido-longo"
+    },
+    {
+      "id": "conjunto-top-legging-suplex",
+      "nome": "Conjunto Top Fitness e Legging Suplex",
+      "descricao": "Conjunto academia top fitness e legging cintura alta zero transparência suplex strep original",
+      "preco": 49.90,
+      "preco_original": 49.90,
+      "desconto": 0,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": ["dry-fit", "compressao"],
+      "badge": null,
+      "disponibilidade": "estoque",
+      "vendas": 6000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mgfj0vpb07b4f3_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/conjunto-top-legging"
+    },
+    {
+      "id": "kit-3-legging-fitness-grossa",
+      "nome": "Kit 3 Calças Legging Grossa Fitness",
+      "descricao": "Kit 3 calças feminina legging grossa para academia fitness cós alto",
+      "preco": 63.99,
+      "preco_original": 79.99,
+      "desconto": 20,
+      "categoria": "calcados-femininos",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 5000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mid5u9sjfjlvf3_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-legging-grossa"
+    }
+  
+            ]
+        };
+
+        // Estado da aplicação
+        let produtos = [];
+        let produtosFiltrados = [];
+        let filtrosAtivos = {
+            categorias: [],
+            tecnologias: [],
+            disponibilidade: []
+        };
+        let currentPage = 1;
+        const itemsPerPage = 15;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarProdutos();
+            setupEventListeners();
+            setupSmoothScroll();
+        });
+
+        function carregarProdutos() {
+            document.getElementById('loader').style.display = 'block';
+
+            setTimeout(() => {
+                produtos = produtosData.produtos;
+                produtosFiltrados = [...produtos];
+                atualizarInterface();
+                document.getElementById('loader').style.display = 'none';
+            }, 500);
+        }
+
+        function setupEventListeners() {
+            // Filtros rápidos
+            document.querySelectorAll('.filtro-categoria').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const categoria = btn.dataset.categoria;
+
+                    document.querySelectorAll('.filtro-categoria').forEach(b => {
+                        b.classList.remove('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+                        b.classList.add('border-white/20', 'text-gray-400');
+                    });
+
+                    btn.classList.add('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+
+                    if (categoria === 'todos') {
+                        filtrosAtivos.categorias = [];
+                    } else {
+                        filtrosAtivos.categorias = [categoria];
+                    }
+
+                    aplicarFiltros();
+                });
+            });
+
+            document.getElementById('limpar-filtros').addEventListener('click', () => {
+                filtrosAtivos = { categorias: [], tecnologias: [], disponibilidade: [] };
+                
+                document.querySelectorAll('.filtro-categoria').forEach(btn => {
+                    if (btn.dataset.categoria === 'todos') {
+                        btn.classList.add('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+                        btn.classList.remove('border-white/20', 'text-gray-400');
+                    } else {
+                        btn.classList.remove('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+                        btn.classList.add('border-white/20', 'text-gray-400');
+                    }
+                });
+
+                aplicarFiltros();
+            });
+
+            document.getElementById('aplicar-filtros').addEventListener('click', () => {
+                coletarFiltrosCheckbox();
+                aplicarFiltros();
+            });
+
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                ordenarProdutos(e.target.value);
+            });
+        }
+
+        function setupSmoothScroll() {
+            document.querySelectorAll('.scroll-link').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        function filtrarPorCategoria(categoria) {
+            document.querySelectorAll('.filtro-categoria').forEach(btn => {
+                btn.classList.remove('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+                btn.classList.add('border-white/20', 'text-gray-400');
+                
+                if (btn.dataset.categoria === categoria) {
+                    btn.classList.add('border-[#00b4ff]', 'bg-[#00b4ff]/10', 'text-[#00b4ff]');
+                    btn.classList.remove('border-white/20', 'text-gray-400');
+                }
+            });
+
+            filtrosAtivos.categorias = [categoria];
+            aplicarFiltros();
+            
+            document.getElementById('colecao').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function coletarFiltrosCheckbox() {
+            filtrosAtivos.categorias = [];
+            document.querySelectorAll('#filtro-categoria input:checked').forEach(cb => {
+                filtrosAtivos.categorias.push(cb.value);
+            });
+
+            filtrosAtivos.tecnologias = [];
+            document.querySelectorAll('#filtro-tecnologia input:checked').forEach(cb => {
+                filtrosAtivos.tecnologias.push(cb.value);
+            });
+
+            filtrosAtivos.disponibilidade = [];
+            document.querySelectorAll('#filtro-disponibilidade input:checked').forEach(cb => {
+                filtrosAtivos.disponibilidade.push(cb.value);
+            });
+        }
+
+        function aplicarFiltros() {
+            produtosFiltrados = produtos.filter(produto => {
+                if (filtrosAtivos.categorias.length > 0 && !filtrosAtivos.categorias.includes(produto.categoria)) {
+                    return false;
+                }
+
+                if (filtrosAtivos.tecnologias && filtrosAtivos.tecnologias.length > 0) {
+                    const temTecnologia = filtrosAtivos.tecnologias.some(tec =>
+                        produto.tecnologia.includes(tec)
+                    );
+                    if (!temTecnologia) return false;
+                }
+
+                if (filtrosAtivos.disponibilidade && filtrosAtivos.disponibilidade.length > 0) {
+                    if (!filtrosAtivos.disponibilidade.includes(produto.disponibilidade)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            currentPage = 1;
+            atualizarInterface();
+        }
+
+        function ordenarProdutos(tipo) {
+            switch(tipo) {
+                case 'menor-preco':
+                    produtosFiltrados.sort((a, b) => a.preco - b.preco);
+                    break;
+                case 'maior-preco':
+                    produtosFiltrados.sort((a, b) => b.preco - a.preco);
+                    break;
+                default:
+                    break;
+            }
+            atualizarInterface();
+        }
+
+        function atualizarInterface() {
+            atualizarContadores();
+            renderizarProdutos();
+            renderizarPaginacao();
+        }
+
+        function atualizarContadores() {
+            document.getElementById('produto-count').textContent = `${produtosFiltrados.length} produtos`;
+            document.getElementById('resultados-encontrados').textContent = `${produtosFiltrados.length} produtos encontrados`;
+        }
+
+        function renderizarProdutos() {
+            const grid = document.getElementById('produtos-grid');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const produtosPagina = produtosFiltrados.slice(start, end);
+
+            if (produtosPagina.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-3 text-center py-20">
+                        <span class="text-6xl text-gray-600">⌘</span>
+                        <p class="text-gray-400 mt-4">Nenhum produto encontrado com os filtros selecionados.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = produtosPagina.map(produto => {
+                const badgeClass = produto.badge === 'sale' ? 'sale' : 
+                                  produto.badge === 'kit' ? 'kit' : 
+                                  produto.badge === 'conjunto' ? 'new' : '';
+
+                const badgeText = produto.badge === 'sale' ? `-${Math.round((1 - produto.preco/produto.preco_original)*100)}%` :
+                                  produto.badge === 'kit' ? 'KIT' :
+                                  produto.badge === 'conjunto' ? 'CONJUNTO' : '';
+
+                return `
+                    <div class="holographic-card rounded-xl p-5 group relative product-card" 
+                         onclick="window.open('${produto.shopee_link}', '_blank')">
+                        ${badgeText ? `<div class="product-badge ${badgeClass}">${badgeText}</div>` : ''}
+                        <div class="aspect-square bg-gradient-to-br from-[#111] to-[#001c28] rounded-lg mb-4 flex items-center justify-center border border-[#00b4ff]/20 group-hover:border-[#00b4ff]/60 transition-all relative overflow-hidden">
+                            <img src="${produto.imagem}" alt="${produto.nome}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-[#00b4ff]/5 opacity-0 group-hover:opacity-100 transition"></div>
+                        </div>
+                        <h3 class="text-xl tech-font text-white mb-1">${produto.nome}</h3>
+                        <p class="text-gray-400 text-xs mb-3">${produto.descricao}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#00b4ff] tech-font text-lg">R$ ${produto.preco.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <button class="btn-shopee" onclick="event.stopPropagation(); window.open('${produto.shopee_link}', '_blank')">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+                            </svg>
+                            COMPRAR NA SHOPEE
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderizarPaginacao() {
+            const totalPages = Math.ceil(produtosFiltrados.length / itemsPerPage);
+            const paginacao = document.getElementById('paginacao');
+
+            if (totalPages <= 1) {
+                paginacao.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <button class="w-10 h-10 border border-[#00b4ff]/30 rounded-lg flex items-center justify-center text-white hover:border-[#00b4ff] hover:text-[#00b4ff] transition"
+                        onclick="mudarPagina(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `
+                        <button class="w-10 h-10 border ${i === currentPage ? 'border-[#00b4ff] bg-[#00b4ff]/10 text-[#00b4ff]' : 'border-[#00b4ff]/30 text-white'} rounded-lg flex items-center justify-center hover:border-[#00b4ff] hover:text-[#00b4ff] transition"
+                                onclick="mudarPagina(${i})">${i}</button>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<span class="text-gray-600">...</span>`;
+                }
+            }
+
+            html += `
+                <button class="w-10 h-10 border border-[#00b4ff]/30 rounded-lg flex items-center justify-center text-white hover:border-[#00b4ff] hover:text-[#00b4ff] transition"
+                        onclick="mudarPagina(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            `;
+
+            paginacao.innerHTML = html;
+        }
+
+        function mudarPagina(page) {
+            const totalPages = Math.ceil(produtosFiltrados.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            renderizarProdutos();
+            renderizarPaginacao();
+            document.getElementById('colecao').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Inicializar filtros checkbox
+        setTimeout(() => {
+            const categorias = [...new Set(produtos.map(p => p.categoria))];
+            document.getElementById('filtro-categoria').innerHTML = categorias.map(cat => `
+                <label class="flex items-center gap-3 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" class="tech-checkbox" value="${cat}">
+                    <span>${cat.replace('camisetas-', '').replace('conjuntos-', '').replace('bermudas-', '').toUpperCase()} (${produtos.filter(p => p.categoria === cat).length})</span>
+                </label>
+            `).join('');
+
+            const tecnologias = [...new Set(produtos.flatMap(p => p.tecnologia))];
+            const tecNomes = {
+                'dry-fit': 'Dry Fit',
+                'protecao-uv': 'Proteção UV',
+                'compressao': 'Compressão'
+            };
+
+            document.getElementById('filtro-tecnologia').innerHTML = tecnologias.map(tec => `
+                <label class="flex items-center gap-3 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" class="tech-checkbox" value="${tec}">
+                    <span>${tecNomes[tec] || tec} (${produtos.filter(p => p.tecnologia.includes(tec)).length})</span>
+                </label>
+            `).join('');
+
+            const disponibilidades = ['estoque'];
+            document.getElementById('filtro-disponibilidade').innerHTML = disponibilidades.map(disp => `
+                <label class="flex items-center gap-3 text-gray-300 text-sm cursor-pointer">
+                    <input type="checkbox" class="tech-checkbox" value="${disp}">
+                    <span>Em estoque (${produtos.filter(p => p.disponibilidade === disp).length})</span>
+                </label>
+            `).join('');
+        }, 500);
+
+        // GSAP Animações
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+            tl.from('#hero-pre', { y: 30, opacity: 0, duration: 1 })
+              .from('#hero-title', { y: 50, opacity: 0, duration: 1.2 }, '-=0.6')
+              .from('#hero-p', { y: 30, opacity: 0, duration: 1 }, '-=0.8')
+              .from('#hero-buttons', { y: 30, opacity: 0, duration: 1 }, '-=0.5');
+
+            gsap.utils.toArray('.holographic-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: { trigger: card, start: 'top 105%' },
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.2,
+                    delay: i * 0.1
+                });
+            });
+
+            // Barra de progresso
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('scrollProgress').style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+</html>
