@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absolut • Coleção Completa</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #111;
+        }
+        h1, h2, h3, .tech-font {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        :root {
+            --abs-blue: #0066ff;
+            --abs-darkblue: #0044cc;
+        }
+
+        /* logo A com círculo */
+        .logo-absolut {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--abs-blue);
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,102,255,0.3);
+        }
+        .logo-ring {
+            position: absolute;
+            width: 58px;
+            height: 58px;
+            border: 2px solid var(--abs-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+            top: -5px;
+            left: -5px;
+        }
+        #absolut{
+            cursor: pointer;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,102,255,0.15);
+        }
+
+        .btn-primary {
+            background: var(--abs-blue);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: 0.2s;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: var(--abs-darkblue);
+            box-shadow: 0 10px 20px -5px rgba(0,102,255,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--abs-blue);
+            color: var(--abs-blue);
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-outline:hover {
+            background: var(--abs-blue);
+            color: white;
+        }
+
+        /* cards */
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(0,102,255,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -8px rgba(0,102,255,0.15);
+            border-color: rgba(0,102,255,0.3);
+        }
+        .product-image {
+            aspect-ratio: 1/1.1;
+            background: #f0f4fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .product-card:hover .product-image img {
+            transform: scale(1.03);
+        }
+
+        .badge-abs {
+            background: var(--abs-blue);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+        .badge-sale {
+            background: #ff3b30;
+        }
+
+        .grid-colecao {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .grid-colecao { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .grid-colecao { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            background: white;
+            color: #333;
+            transition: all 0.1s;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .filter-tag.active {
+            background: var(--abs-blue);
+            border-color: var(--abs-blue);
+            color: white;
+        }
+
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--abs-blue);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <!-- barra de progresso -->
+    <div id="progress"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full navbar z-40 px-6 md:px-12 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+        <!-- logo A com círculo -->
+        <div class="relative">
+            <img class="logo-absolut" src="logoabsolut2.png" alt="" >
+            <div class="logo-ring"></div>
+        </div>
+        <span class="text-xl font-bold text-[#0066ff] tracking-tight" id="absolut">ABSOLUT</span>
+    </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium text-gray-700">
+            <a href="index.html" class="hover:text-[#0066ff]">início</a>
+            <a href="#" class="text-[#0066ff] font-semibold">coleção completa</a>
+            <a href="#contato" class="hover:text-[#0066ff]">contato</a>
+        </div>
+        <div class="flex gap-5">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+    </nav>
+
+    <!-- HEADER DA COLEÇÃO -->
+    <section class="pt-32 pb-10 px-6 md:px-12 bg-[#f5f9ff]">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">coleção <span class="text-[#0066ff]">completa</span></h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Todas as peças para elevar sua performance. Filtre por categoria e encontre o seu estilo.</p>
+        </div>
+    </section>
+
+    <!-- FILTROS E PRODUTOS -->
+    <section class="py-12 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- linha de filtros -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+                <div class="flex gap-2 flex-wrap">
+                    <span class="filter-tag active" data-filter="todos">todos</span>
+                    <span class="filter-tag" data-filter="feminino">feminino</span>
+                    <span class="filter-tag" data-filter="masculino">masculino</span>
+                    <span class="filter-tag" data-filter="kits">kits</span>
+                    <span class="filter-tag" data-filter="sale">sale</span>
+                    <span class="filter-tag" data-filter="conjuntos">conjuntos</span>
+                </div>
+                <span class="text-sm text-gray-500" id="produtos-count">carregando...</span>
+            </div>
+
+            <!-- grade de produtos -->
+            <div id="produtos-container" class="grid-colecao"></div>
+
+            <!-- load more / paginação simples (opcional) -->
+            <div class="text-center mt-16">
+                <button id="ver-mais" class="btn-outline px-8 py-2">carregar mais</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO RODAPÉ -->
+   <section id="contato" class="py-20 px-6 md:px-12">
+    <div class="max-w-3xl mx-auto text-center">
+        <!-- <div class="logo-absolut mx-auto mb-4"><span>A</span></div>
+         -->
+            <img class="logo-absolut mx-auto mb-4" src="logoabsolut2.png" alt="" >
+        <h3 class="text-3xl font-bold">acompanhe <span class="text-[#0066ff]">@_absolutstore</span></h3>
+        <br>
+        <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto">
+            <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=200&h=200&fit=crop" class="rounded-2xl aspect-square object-cover">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=200&h=200&fit=crop" class="rounded-2xl aspect-square object-cover">
+            <img src="https://images.unsplash.com/photo-1566577134770-3d85bb3a9cc4?w=200&h=200&fit=crop" class="rounded-2xl aspect-square object-cover">
+        </div>
+    </div>
+</section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#f5f9ff] py-12 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2">
+                    <div class="logo-absolut w-8 h-8 text-2xl"><span>A</span></div>
+                    <span class="font-bold text-[#0066ff]">ABSOLUT</span>
+                </div>
+                <p class="text-sm text-gray-500 mt-3">roupas técnicas desde 2020</p>
+            </div>
+            <div><h4 class="font-bold mb-3">categorias</h4><ul class="text-sm text-gray-500 space-y-1"><li>feminino</li><li>masculino</li><li>kits</li><li>conjuntos</li></ul></div>
+            <div><h4 class="font-bold mb-3">suporte</h4><ul class="text-sm text-gray-500 space-y-1"><li>trocas</li><li>frete</li><li>contato</li></ul></div>
+            <div><h4 class="font-bold mb-3">redes</h4><ul class="text-sm text-gray-500 space-y-1"><li>instagram</li><li>tiktok</li></ul></div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-10">Absolut Sport © 2026 – coleção completa</div>
+    </footer>
+
+    <script>
+        // MESMO JSON (fiel ao fornecido)
+        const produtosData = {
+            "produtos": [
+                
+    {
+      "id": "camiseta-dry-fit-feminina-bl01",
+      "nome": "Camiseta Dry Fit Feminina BL01",
+      "descricao": "Camiseta dry fit feminina com proteção UV para academia, corrida e treino",
+      "preco": 29.99,
+      "preco_original": 29.99,
+      "categoria": "camisetas-femininas",
+      "tecnologia": ["dry-fit", "protecao-uv"],
+      "badge": "sale",
+      "disponibilidade": "estoque",
+      "vendas": 30000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-lyhcnwggp8k52f_tn",
+      "shopee_link": "https://s.shopee.com.br/5fjOfKJ1fV"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-01",
+      "nome": "Kit 3 Camisetas Dry Fit Masculinas",
+      "descricao": "Kit com 3 camisetas de poliéster dry fit para academia, treino, corrida e esportes",
+      "preco": 34.50,
+      "preco_original": 60.17,
+      "desconto": 42,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 406,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-mhji9bvmof0if9_tn",
+      "shopee_link": "https://s.shopee.com.br/20q6IuXqJ3"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-casual",
+      "nome": "Kit 3 Camisetas Dry Fit Masculinas - Casual",
+      "descricao": "Kit com 3 camisetas dry fit para uso casual, treino, academia e corrida",
+      "preco": 47.90,
+      "preco_original": 55.06,
+      "desconto": 13,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 20000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-7qukw-li35a207xoad73_tn",
+      "shopee_link": "https://s.shopee.com.br/BOS7dXnBV"
+    },
+    {
+      "id": "kit-3-shorts-masculinos-2em1",
+      "nome": "Kit 3 Shorts Bermuda Masculino 2 em 1",
+      "descricao": "Kit com 3 shorts bermuda de compressão para treino e academia",
+      "preco": 56.98,
+      "preco_original": 101.75,
+      "desconto": 44,
+      "categoria": "shorts-masculinos",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 1000,
+      "imagem": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-miczygiea32ab9_tn",
+      "shopee_link": "https://shopee.com.br/product/1234567890/kit-3-shorts-2em1"
+    },
+    {
+      "id": "conjunto-short-saia-cropped-feminino",
+      "nome": "Conjunto Short Saia e Cropped Feminino",
+      "descricao": "Conjunto feminino de short saia e cropped com cinto, alça com regulagem, bojo e laço de amarrar",
+      "preco": 102.40,
+      "preco_original": 160.00,
+      "desconto": 36,
+      "categoria": "conjuntos-femininos",
+      "tecnologia": [],
+      "badge": "conjunto",
+      "disponibilidade": "estoque",
+      "vendas": 815,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81ztc-mk42smk5asjl90_tn",
+      "shopee_link": "https://s.shopee.com.br/6pvM3qip31"
+    },
+    {
+      "id": "kit-2-bermudas-compressao-femininas",
+      "nome": "Kit 2 Bermudas Compressão Femininas",
+      "descricao": "Kit com 2 bermudas de compressão femininas modeladoras, antitransparente, cintura alta para treino",
+      "preco": 34.15,
+      "preco_original": 69.69,
+      "desconto": 51,
+      "categoria": "bermudas-femininas",
+      "tecnologia": ["compressao"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 452,
+      "imagem": "https://down-tx-br.img.susercontent.com/br-11134207-81z1k-mh185g22ikudd1_tn",
+      "shopee_link": "https://s.shopee.com.br/3Veu5mTZEO"
+    },
+    {
+      "id": "kit-3-camisetas-dryfit-masculinas-casual",
+      "nome": "Kit 3 Camisetas Dry Fit Masculina - Casual",
+      "descricao": "Kit com 3 camisetas dry fit para uso casual, treino, academia, esportes, exercícios e corrida",
+      "preco": 47.90,
+      "preco_original": 55.06,
+      "desconto": 13,
+      "categoria": "camisetas-masculinas",
+      "tecnologia": ["dry-fit"],
+      "badge": "kit",
+      "disponibilidade": "estoque",
+      "vendas": 20000,
+      "imagem": "https://down-br.img.susercontent.com/file/br-11134207-7qukw-li35a207xoad73_tn",
+      "shopee_link": "https://s.shopee.com.br/BOS7dXnBV"
+    }
+  
+            ]
+        };
+
+        // estado
+        let produtos = produtosData.produtos;
+        let currentFilter = 'todos';
+        let visibleCount = 12; // mostra 12 inicialmente, depois aumenta
+
+        // função para renderizar cards
+        function renderizarProdutos(lista) {
+            return lista.map(p => {
+                let badgeHtml = '';
+                if (p.badge === 'sale') badgeHtml = `<span class="badge-abs badge-sale">-${p.desconto}%</span>`;
+                else if (p.badge === 'kit') badgeHtml = `<span class="badge-abs">KIT</span>`;
+                else if (p.badge === 'conjunto') badgeHtml = `<span class="badge-abs">CONJUNTO</span>`;
+
+                return `<div class="product-card" onclick="window.open('${p.shopee_link}','_blank')">
+                    <div class="product-image">
+                        <img src="${p.imagem}" alt="${p.nome}" loading="lazy">
+                        ${badgeHtml}
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800">${p.nome}</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xl font-bold text-[#0066ff]">R$ ${p.preco.toFixed(2).replace('.',',')}</span>
+                            ${p.preco_original > p.preco ? `<span class="text-sm text-gray-400 line-through">R$ ${p.preco_original.toFixed(2).replace('.',',')}</span>` : ''}
+                        </div>
+                        <button class="mt-3 w-full border border-[#0066ff] text-[#0066ff] py-2 rounded-full text-sm font-semibold hover:bg-[#0066ff] hover:text-white transition">COMPRAR</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // filtra de acordo com a tag
+        function filtrarProdutos(filtro) {
+            if (filtro === 'todos') return produtos;
+            if (filtro === 'feminino') return produtos.filter(p => p.categoria.includes('feminino') || p.categoria === 'tops-femininos' || p.categoria === 'conjuntos-femininos' || p.categoria === 'bermudas-femininas' || p.categoria === 'regatas-femininas' || p.categoria === 'calcados-femininos' || p.categoria === 'macacoes-femininos');
+            if (filtro === 'masculino') return produtos.filter(p => p.categoria.includes('masculino'));
+            if (filtro === 'kits') return produtos.filter(p => p.badge === 'kit');
+            if (filtro === 'sale') return produtos.filter(p => p.badge === 'sale');
+            if (filtro === 'conjuntos') return produtos.filter(p => p.categoria.includes('conjuntos') || p.badge === 'conjunto');
+            return produtos;
+        }
+
+        function atualizarGrade() {
+            const filtrados = filtrarProdutos(currentFilter);
+            const mostrar = filtrados.slice(0, visibleCount);
+            document.getElementById('produtos-container').innerHTML = renderizarProdutos(mostrar);
+            document.getElementById('produtos-count').innerText = `${filtrados.length} produtos`;
+
+            // se já mostrou todos, esconde botão ver mais
+            const btnMais = document.getElementById('ver-mais');
+            if (filtrados.length <= visibleCount) {
+                btnMais.style.display = 'none';
+            } else {
+                btnMais.style.display = 'inline-block';
+            }
+        }
+
+        // evento dos filtros
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                visibleCount = 12; // reset ao mudar filtro
+                atualizarGrade();
+            });
+        });
+
+        const absolut = document.getElementById('absolut');
+
+        absolut.addEventListener('click', function(){
+            window.location.href = 'index.html'
+        })
+
+        // botão ver mais
+        document.getElementById('ver-mais').addEventListener('click', function() {
+            const filtrados = filtrarProdutos(currentFilter);
+            if (visibleCount + 8 <= filtrados.length) {
+                visibleCount += 8;
+            } else {
+                visibleCount = filtrados.length;
+                this.style.display = 'none';
+            }
+            atualizarGrade();
+        });
+
+        // barra de progresso
+        window.addEventListener('scroll', function() {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progress').style.width = (winScroll / height) * 100 + '%';
+        });
+
+        // inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            atualizarGrade();
+        });
+    </script>
+</body>
+</html>
